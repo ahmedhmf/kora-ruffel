@@ -174,10 +174,9 @@ export class AppComponent {
       const displayPool = pool.length ? pool : allEntries;
       const images = new Map<string, HTMLImageElement>();
 
-      const [brandBackground, brandLogo, brandIcons] = await Promise.all([
-        this.loadImage('/kora-bg.svg'),
-        this.loadImage('/kora-logo.svg'),
-        this.loadImage('/kora-top-icons.svg')
+      const [brandBackground, brandLogo] = await Promise.all([
+        this.loadImage('/kora-stage-bg.svg'),
+        this.loadImage('/kora-logo.svg')
       ]);
 
       await Promise.all(
@@ -252,8 +251,7 @@ export class AppComponent {
             Math.max(0, elapsed - 7500),
             confetti,
             brandBackground,
-            brandLogo,
-            brandIcons
+            brandLogo
           );
 
           if (elapsed < totalDuration) {
@@ -310,8 +308,7 @@ export class AppComponent {
     revealElapsed: number,
     confetti: ConfettiPiece[],
     brandBackground: HTMLImageElement,
-    brandLogo: HTMLImageElement,
-    brandIcons: HTMLImageElement
+    brandLogo: HTMLImageElement
   ) {
     const width = canvas.width;
     const height = canvas.height;
@@ -324,19 +321,14 @@ export class AppComponent {
     ctx.fillRect(0, 0, width, height);
 
     ctx.save();
-    ctx.globalAlpha = .95;
-    ctx.drawImage(brandIcons, 170, 62, 740, 73);
-    ctx.restore();
-
-    ctx.save();
     ctx.filter = 'invert(1)';
-    ctx.drawImage(brandLogo, 72, 148, 300, 64);
+    ctx.drawImage(brandLogo, 390, 92, 300, 64);
     ctx.restore();
 
     ctx.textAlign = 'center';
     ctx.fillStyle = '#ffffff';
     ctx.font = '700 24px sans-serif';
-    ctx.fillText('OFFICIAL GIVEAWAY', width / 2, 270);
+    ctx.fillText('OFFICIAL GIVEAWAY', width / 2, 245);
 
     ctx.fillStyle = '#ffffff';
     ctx.font = '700 70px sans-serif';
