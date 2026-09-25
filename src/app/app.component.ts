@@ -68,6 +68,12 @@ export class AppComponent {
   }
   async drawNext(){ this.stageState.set('idle'); await this.sleep(250); await this.drawWinner(); }
   resetStage(){ this.stageState.set('idle'); this.activeEntry.set(this.raffle.eligible()[0]??this.raffle.entries()[0]??null); }
+
+  startNewRaffle(){
+    this.raffle.resetWinners();
+    this.stageState.set('idle');
+    this.activeEntry.set(this.raffle.entries()[0]??null);
+  }
   isVideo(entry:RaffleEntry):boolean { return entry.mediaType==='video' || entry.designUrl.startsWith('data:video/'); }
   private sleep(ms:number){ return new Promise(resolve=>window.setTimeout(resolve,ms)); }
 }
