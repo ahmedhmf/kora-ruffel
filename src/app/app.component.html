@@ -142,12 +142,25 @@
       </div>
 
       <div class="draw-zone">
-        @if (stageState() === 'countdown') {
-          @switch (countdown()) {
-            @case (3) { <div class="countdown">3</div> }
-            @case (2) { <div class="countdown">2</div> }
-            @case (1) { <div class="countdown">1</div> }
-          }
+        @if (stageState() === 'idle' || stageState() === 'countdown') {
+          <article class="hero-card prize-card">
+            <div class="prize-frame">
+              <img [src]="prizeImageUrl" [alt]="prizeTitle">
+              @if (stageState() === 'countdown') {
+                @switch (countdown()) {
+                  @case (3) { <div class="countdown countdown-overlay">3</div> }
+                  @case (2) { <div class="countdown countdown-overlay">2</div> }
+                  @case (1) { <div class="countdown countdown-overlay">1</div> }
+                }
+              }
+            </div>
+
+            <div class="hero-meta prize-meta">
+              <span>THE PRIZE</span>
+              <h3>{{ prizeTitle }}</h3>
+              <p>{{ prizeSubtitle }}</p>
+            </div>
+          </article>
         } @else if (activeEntry(); as entry) {
           <article
             class="hero-card"
