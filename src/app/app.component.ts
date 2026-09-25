@@ -174,6 +174,12 @@ export class AppComponent {
       const displayPool = pool.length ? pool : allEntries;
       const images = new Map<string, HTMLImageElement>();
 
+      const [brandBackground, brandLogo, brandIcons] = await Promise.all([
+        this.loadImage('/kora-bg.svg'),
+        this.loadImage('/kora-logo.svg'),
+        this.loadImage('/kora-top-icons.svg')
+      ]);
+
       await Promise.all(
         allEntries.map(async entry => {
           images.set(entry.id, await this.loadImage(entry.designUrl));
@@ -244,7 +250,10 @@ export class AppComponent {
             entry,
             images.get(entry.id) ?? images.get(winner.id)!,
             Math.max(0, elapsed - 7500),
-            confetti
+            confetti,
+            brandBackground,
+            brandLogo,
+            brandIcons
           );
 
           if (elapsed < totalDuration) {
@@ -299,62 +308,44 @@ export class AppComponent {
     entry: RaffleEntry,
     image: HTMLImageElement,
     revealElapsed: number,
-    confetti: ConfettiPiece[]
+    confetti: ConfettiPiece[],
+    brandBackground: HTMLImageElement,
+    brandLogo: HTMLImageElement,
+    brandIcons: HTMLImageElement
   ) {
     const width = canvas.width;
     const height = canvas.height;
 
-    const background = ctx.createLinearGradient(0, 0, width, height);
-    background.addColorStop(0, '#11182a');
-    background.addColorStop(0.45, '#070a12');
-    background.addColorStop(1, '#03050a');
-    ctx.fillStyle = background;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, width, height);
+    this.drawImageCover(ctx, brandBackground, 0, 0, width, height);
+
+    ctx.fillStyle = 'rgba(0,0,0,.22)';
     ctx.fillRect(0, 0, width, height);
 
-    const glowA = ctx.createRadialGradient(160, 220, 0, 160, 220, 620);
-    glowA.addColorStop(0, 'rgba(116,87,255,.30)');
-    glowA.addColorStop(1, 'rgba(116,87,255,0)');
-    ctx.fillStyle = glowA;
-    ctx.fillRect(0, 0, width, height);
+    ctx.save();
+    ctx.globalAlpha = .95;
+    ctx.drawImage(brandIcons, 170, 62, 740, 73);
+    ctx.restore();
 
-    const glowB = ctx.createRadialGradient(900, 1580, 0, 900, 1580, 620);
-    glowB.addColorStop(0, 'rgba(25,168,255,.20)');
-    glowB.addColorStop(1, 'rgba(25,168,255,0)');
-    ctx.fillStyle = glowB;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.strokeStyle = 'rgba(255,255,255,.035)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x <= width; x += 90) {
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
-      ctx.stroke();
-    }
-    for (let y = 0; y <= height; y += 90) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
+    ctx.save();
+    ctx.filter = 'invert(1)';
+    ctx.drawImage(brandLogo, 72, 148, 300, 64);
+    ctx.restore();
 
     ctx.textAlign = 'center';
-    ctx.fillStyle = '#d7ff68';
-    ctx.font = '700 28px sans-serif';
-    ctx.fillText('●  RAFFLE STUDIO', width / 2, 120);
-
-    ctx.fillStyle = '#9ca6b8';
+    ctx.fillStyle = '#ffffff';
     ctx.font = '700 24px sans-serif';
-    ctx.fillText('OFFICIAL GIVEAWAY', width / 2, 245);
+    ctx.fillText('OFFICIAL GIVEAWAY', width / 2, 270);
 
-    ctx.fillStyle = '#f7f8fc';
+    ctx.fillStyle = '#ffffff';
     ctx.font = '700 70px sans-serif';
     const title = phase === 'reveal' ? 'WE HAVE A WINNER' : 'WHO TAKES IT?';
     ctx.fillText(title, width / 2, 340);
 
     if (phase === 'countdown') {
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(143,124,255,.9)';
+      ctx.shadowColor = 'rgba(225,6,0,.95)';
       ctx.shadowBlur = 60;
       ctx.font = '700 360px sans-serif';
       ctx.fillText(String(countdownValue), width / 2, 1120);
@@ -377,8 +368,8 @@ export class AppComponent {
         centerX, centerY, 180,
         centerX, centerY, 470
       );
-      winnerGlow.addColorStop(0, 'rgba(215,255,104,.22)');
-      winnerGlow.addColorStop(1, 'rgba(215,255,104,0)');
+      winnerGlow.addColorStop(0, 'rgba(225,6,0,.28)');
+      winnerGlow.addColorStop(1, 'rgba(225,6,0,0)');
       ctx.fillStyle = winnerGlow;
       ctx.beginPath();
       ctx.arc(centerX, centerY, 470, 0, Math.PI * 2);
@@ -399,12 +390,12 @@ export class AppComponent {
     ctx.restore();
 
     ctx.lineWidth = phase === 'reveal' ? 8 : 4;
-    ctx.strokeStyle = phase === 'reveal' ? '#d7ff68' : 'rgba(255,255,255,.20)';
+    ctx.strokeStyle = phase === 'reveal' ? '#e10600' : 'rgba(255,255,255,.34)';
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius + 8, 0, Math.PI * 2);
     ctx.stroke();
 
-    ctx.fillStyle = phase === 'reveal' ? '#d7ff68' : '#9ca6b8';
+    ctx.fillStyle = phase === 'reveal' ? '#e10600' : '#ffffff';
     ctx.font = '700 28px sans-serif';
     ctx.fillText(phase === 'reveal' ? 'WINNER' : 'IN THE DRAW', centerX, 1340);
 
@@ -427,9 +418,9 @@ export class AppComponent {
       ctx.fillText('Randomizing entries…', centerX, 1700);
     }
 
-    ctx.fillStyle = 'rgba(255,255,255,.42)';
+    ctx.fillStyle = 'rgba(255,255,255,.72)';
     ctx.font = '600 22px sans-serif';
-    ctx.fillText('9:16 INSTAGRAM RAFFLE', centerX, 1830);
+    ctx.fillText('KORA · 9:16 INSTAGRAM RAFFLE', centerX, 1830);
   }
 
   private drawExportConfetti(
