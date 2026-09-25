@@ -445,3 +445,104 @@
   .stage-logo{width:74px}
   .stage-icons{width:64%}
 }
+
+
+/* Homepage cleanup: keep Kora branding restrained outside the recording studio */
+.app-shell{
+  background:
+    radial-gradient(circle at 14% -10%,rgba(225,6,0,.10),transparent 30%),
+    linear-gradient(180deg,#0b0d12 0%,#090b10 100%);
+}
+
+.topbar{
+  background:rgba(9,11,16,.94);
+  border-bottom:1px solid #ffffff12;
+  backdrop-filter:blur(16px);
+}
+
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.brand-logo{
+  width:118px;
+  height:auto;
+  filter:invert(1);
+  opacity:.96;
+}
+
+.brand-lockup .eyebrow{
+  padding-left:14px;
+  border-left:1px solid #ffffff1f;
+  color:#aeb5c3;
+}
+
+.panel{
+  background:#10131b;
+  border-color:#ffffff12;
+  box-shadow:0 22px 80px #00000025;
+}
+
+.panel .eyebrow{
+  color:#e55751;
+}
+
+.counter{
+  color:#9aa3b6;
+  background:#ffffff08;
+  border:1px solid #ffffff0b;
+}
+
+.entry-card{
+  background:#0b0e14;
+}
+
+.entry-card:hover{
+  border-color:#ffffff28;
+}
+
+.upload{
+  border-color:#ffffff26;
+}
+
+.upload strong{
+  color:#ef6c66;
+}
+
+.toolbar .new-raffle{
+  color:#ef6c66;
+  border-color:#e1060038;
+}
+
+.toolbar .danger{
+  color:#ff9fa9;
+}
+
+.primary,
+.stage-btn{
+  background:#e10600;
+  color:#fff;
+}
+
+.primary:hover,
+.stage-btn:hover{
+  background:#f01912;
+}
+
+.entry-form input:focus{
+  border-color:#e10600;
+  box-shadow:0 0 0 3px #e106001a;
+}
+
+.badge{
+  background:#e10600;
+  color:#fff;
+}
+
+@media(max-width:720px){
+  .brand-logo{width:98px}
+  .brand-lockup{gap:9px}
+  .brand-lockup .eyebrow{padding-left:9px}
+}
