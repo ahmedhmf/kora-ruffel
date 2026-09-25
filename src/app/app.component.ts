@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RaffleEntry } from './raffle.model';
+import { RaffleEntry, RaffleMediaType } from './raffle.model';
 import { RaffleService } from './raffle.service';
 
 type StageState = 'idle' | 'countdown' | 'spinning' | 'reveal';
@@ -19,11 +19,13 @@ export class AppComponent {
   instagram='';
   readonly designUrl=signal('');
   readonly fileName=signal('');
+  readonly mediaType=signal<RaffleMediaType>('image');
   @ViewChild('stage') stage?:ElementRef<HTMLElement>;
 
   onFile(event:Event) {
     const input=event.target as HTMLInputElement; const file=input.files?.[0]; if(!file) return;
     this.fileName.set(file.name);
+    this.mediaType.set(file.type.startsWith('video/') ? 'video' : 'image');
     const reader=new FileReader();
     reader.onload=()=>this.designUrl.set(String(reader.result??''));
     reader.readAsDataURL(file);
@@ -32,11 +34,12 @@ export class AppComponent {
     const name=this.name.trim();
     const designUrl=this.designUrl();
     if(!name||!designUrl) return;
-    this.raffle.add({name,instagram:this.instagram.trim().replace(/^@/,''),designUrl});
+    this.raffle.add({name,instagram:this.instagram.trim().replace(/^@/,''),designUrl,mediaType:this.mediaType()});
     this.name='';
     this.instagram='';
     this.designUrl.set('');
     this.fileName.set('');
+    this.mediaType.set('image');
   }
   openStage() {
     if(!this.raffle.entries().length) return; this.stageOpen.set(true);
@@ -65,5 +68,6 @@ export class AppComponent {
   }
   async drawNext(){ this.stageState.set('idle'); await this.sleep(250); await this.drawWinner(); }
   resetStage(){ this.stageState.set('idle'); this.activeEntry.set(this.raffle.eligible()[0]??this.raffle.entries()[0]??null); }
+  isVideo(entry:RaffleEntry):boolean { return entry.mediaType==='video' || entry.designUrl.startsWith('data:video/'); }
   private sleep(ms:number){ return new Promise(resolve=>window.setTimeout(resolve,ms)); }
 }
