@@ -176,7 +176,7 @@ export class AppComponent {
 
       const [brandBackground, brandLogo] = await Promise.all([
         this.loadImage('/kora-stage-bg.svg'),
-        this.loadImage('/kora-logo.svg')
+        this.loadImage('/kora-logo.png')
       ]);
 
       await Promise.all(
