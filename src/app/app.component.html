@@ -1,8 +1,8 @@
 <div class="app-shell">
   <header class="topbar">
-    <div>
-      <span class="eyebrow">Giveaway toolkit</span>
-      <h1>Raffle Studio</h1>
+    <div class="brand-lockup">
+      <img class="brand-logo" src="/kora-logo.svg" alt="Kora">
+      <span class="eyebrow">Raffle Studio</span>
     </div>
     <button class="stage-btn" [disabled]="!raffle.entries().length" (click)="openStage()">
       Open recording stage ↗
@@ -130,7 +130,8 @@
       <div class="grid-lines"></div>
 
       <header class="stage-header">
-        <div><span class="stage-mark">●</span> RAFFLE STUDIO</div>
+        <img class="stage-icons" src="/kora-top-icons.svg" alt="" aria-hidden="true">
+        <img class="stage-logo" src="/kora-logo.svg" alt="Kora">
         <button (click)="closeStage()">Close ×</button>
       </header>
 
