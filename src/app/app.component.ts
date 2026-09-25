@@ -31,6 +31,9 @@ export class AppComponent {
   readonly canDraw = computed(() => this.raffle.eligible().length > 0 && this.stageState() === 'idle');
   readonly exportingWinnerId = signal<string | null>(null);
   readonly exportMessage = signal('');
+  readonly prizeImageUrl = '/prize-tshirt.jpg';
+  readonly prizeTitle = 'Kora T-Shirt';
+  readonly prizeSubtitle = 'Official raffle prize';
 
   name = '';
   instagram = '';
@@ -174,9 +177,10 @@ export class AppComponent {
       const displayPool = pool.length ? pool : allEntries;
       const images = new Map<string, HTMLImageElement>();
 
-      const [brandBackground, brandLogo] = await Promise.all([
+      const [brandBackground, brandLogo, prizeImage] = await Promise.all([
         this.loadImage('/kora-stage-bg.svg'),
-        this.loadImage('/kora-logo.png')
+        this.loadImage('/kora-logo.png'),
+        this.loadImage(this.prizeImageUrl)
       ]);
 
       await Promise.all(
@@ -251,7 +255,8 @@ export class AppComponent {
             Math.max(0, elapsed - 7500),
             confetti,
             brandBackground,
-            brandLogo
+            brandLogo,
+            prizeImage
           );
 
           if (elapsed < totalDuration) {
@@ -308,7 +313,8 @@ export class AppComponent {
     revealElapsed: number,
     confetti: ConfettiPiece[],
     brandBackground: HTMLImageElement,
-    brandLogo: HTMLImageElement
+    brandLogo: HTMLImageElement,
+    prizeImage: HTMLImageElement
   ) {
     const width = canvas.width;
     const height = canvas.height;
@@ -336,11 +342,48 @@ export class AppComponent {
     ctx.fillText(title, width / 2, 340);
 
     if (phase === 'countdown') {
+      const centerX = width / 2;
+      const centerY = 930;
+      const frameWidth = 650;
+      const frameHeight = 650;
+      const frameX = centerX - frameWidth / 2;
+      const frameY = centerY - frameHeight / 2;
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,.96)';
+      ctx.beginPath();
+      ctx.roundRect(frameX, frameY, frameWidth, frameHeight, 42);
+      ctx.fill();
+      ctx.clip();
+
+      this.drawImageContain(
+        ctx,
+        prizeImage,
+        frameX + 28,
+        frameY + 28,
+        frameWidth - 56,
+        frameHeight - 56
+      );
+      ctx.restore();
+
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = '#e10600';
+      ctx.beginPath();
+      ctx.roundRect(frameX, frameY, frameWidth, frameHeight, 42);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '700 28px sans-serif';
+      ctx.fillText('THE PRIZE', centerX, 1320);
+
+      ctx.font = '700 68px sans-serif';
+      ctx.fillText('Kora T-Shirt', centerX, 1410);
+
       ctx.fillStyle = '#ffffff';
       ctx.shadowColor = 'rgba(225,6,0,.95)';
-      ctx.shadowBlur = 60;
-      ctx.font = '700 360px sans-serif';
-      ctx.fillText(String(countdownValue), width / 2, 1120);
+      ctx.shadowBlur = 45;
+      ctx.font = '700 220px sans-serif';
+      ctx.fillText(String(countdownValue), centerX, 1060);
       ctx.shadowBlur = 0;
       return;
     }
@@ -448,6 +491,23 @@ export class AppComponent {
       spin: 2 + (index % 5),
       hue: (index * 41) % 360
     }));
+  }
+
+  private drawImageContain(
+    ctx: CanvasRenderingContext2D,
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  ) {
+    const scale = Math.min(width / image.naturalWidth, height / image.naturalHeight);
+    const drawWidth = image.naturalWidth * scale;
+    const drawHeight = image.naturalHeight * scale;
+    const drawX = x + (width - drawWidth) / 2;
+    const drawY = y + (height - drawHeight) / 2;
+
+    ctx.drawImage(image, drawX, drawY, drawWidth, drawHeight);
   }
 
   private drawImageCover(
