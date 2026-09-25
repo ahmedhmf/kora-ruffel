@@ -50,8 +50,8 @@
       <div class="panel-heading">
         <div><span class="eyebrow">02 · Roster</span><h2>Participants</h2></div>
         <div class="toolbar">
-          <button class="new-raffle" (click)="startNewRaffle()" [disabled]="!raffle.winners().length">
-            Start new raffle
+          <button class="new-raffle" (click)="startNewRaffle()" [disabled]="!raffle.eligible().length">
+            Start next raffle
           </button>
           <button class="danger" (click)="raffle.clearAll()" [disabled]="!raffle.entries().length">
             Clear all
