@@ -810,3 +810,57 @@
   .raffle-stage .stage-copy{padding-top:18px}
   .raffle-stage .hero-card{width:min(100%,260px)}
 }
+
+
+/* Final clean Kora 9:16 stage */
+.studio-overlay{background:#050505}
+
+.raffle-stage{
+  background:
+    linear-gradient(rgba(0,0,0,.04),rgba(0,0,0,.13)),
+    url('/kora-stage-bg.svg') center center / cover no-repeat !important;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:22px;
+  box-shadow:0 24px 80px rgba(0,0,0,.62);
+}
+
+.kora-brand-chrome{
+  padding-top:8px;
+  gap:0;
+}
+
+.stage-icons{display:none!important}
+
+.stage-logo{
+  width:112px;
+  max-height:46px;
+  object-fit:contain;
+  filter:invert(1);
+}
+
+.raffle-stage .stage-copy{padding-top:22px}
+
+.raffle-stage .stage-copy h2{
+  text-shadow:0 2px 8px rgba(0,0,0,.28);
+}
+
+.raffle-stage .design-frame{
+  border:3px solid #e10600;
+  background:rgba(0,0,0,.18);
+  box-shadow:0 16px 42px rgba(0,0,0,.40);
+}
+
+.raffle-stage .design-frame .shine{display:none}
+
+.raffle-stage .hero-meta h3{
+  text-shadow:0 2px 7px rgba(0,0,0,.28);
+}
+
+.stage-footer-mark{color:rgba(255,255,255,.74)}
+
+@media(max-width:720px){
+  .stage-logo{
+    width:96px;
+    max-height:40px;
+  }
+}
