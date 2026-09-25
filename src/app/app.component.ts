@@ -15,17 +15,28 @@ export class AppComponent {
   readonly confetti=signal(Array.from({length:70},(_,i)=>i));
   readonly canDraw=computed(()=>this.raffle.eligible().length>0&&this.stageState()==='idle');
 
-  name=''; instagram=''; designUrl=''; fileName='';
+  name='';
+  instagram='';
+  readonly designUrl=signal('');
+  readonly fileName=signal('');
   @ViewChild('stage') stage?:ElementRef<HTMLElement>;
 
   onFile(event:Event) {
     const input=event.target as HTMLInputElement; const file=input.files?.[0]; if(!file) return;
-    this.fileName=file.name; const reader=new FileReader(); reader.onload=()=>this.designUrl=String(reader.result??''); reader.readAsDataURL(file);
+    this.fileName.set(file.name);
+    const reader=new FileReader();
+    reader.onload=()=>this.designUrl.set(String(reader.result??''));
+    reader.readAsDataURL(file);
   }
   addEntry() {
-    const name=this.name.trim(); if(!name||!this.designUrl) return;
-    this.raffle.add({name,instagram:this.instagram.trim().replace(/^@/,''),designUrl:this.designUrl});
-    this.name=''; this.instagram=''; this.designUrl=''; this.fileName='';
+    const name=this.name.trim();
+    const designUrl=this.designUrl();
+    if(!name||!designUrl) return;
+    this.raffle.add({name,instagram:this.instagram.trim().replace(/^@/,''),designUrl});
+    this.name='';
+    this.instagram='';
+    this.designUrl.set('');
+    this.fileName.set('');
   }
   openStage() {
     if(!this.raffle.entries().length) return; this.stageOpen.set(true);
