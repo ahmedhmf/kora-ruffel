@@ -6,9 +6,9 @@
 <form (ngSubmit)="addEntry()" class="entry-form">
 <label>Name<input [(ngModel)]="name" name="name" placeholder="Alex Morgan" required></label>
 <label>Instagram<input [(ngModel)]="instagram" name="instagram" placeholder="@alexdesigns"></label>
-<label class="upload"><span>{{ fileName || 'Choose ball design' }}</span><strong>Upload image</strong><input type="file" accept="image/*" (change)="onFile($event)" hidden></label>
-@if (designUrl) { <div class="preview"><img [src]="designUrl" alt="Design preview"><span>Ready to add</span></div> }
-<button class="primary" type="submit" [disabled]="!name.trim() || !designUrl">Add participant</button>
+<label class="upload"><span>{{ fileName() || 'Choose ball design' }}</span><strong>Upload image</strong><input type="file" accept="image/*" (change)="onFile($event)" hidden></label>
+@if (designUrl()) { <div class="preview"><img [src]="designUrl()" alt="Design preview"><span>Ready to add</span></div> }
+<button class="primary" type="submit" [disabled]="!name.trim() || !designUrl()">Add participant</button>
 </form></section>
 <section class="panel roster-panel">
 <div class="panel-heading"><div><span class="eyebrow">02 · Roster</span><h2>Participants</h2></div><div class="toolbar"><button (click)="raffle.resetWinners()" [disabled]="!raffle.winners().length">Reset winners</button><button class="danger" (click)="raffle.clearAll()" [disabled]="!raffle.entries().length">Clear</button></div></div>
