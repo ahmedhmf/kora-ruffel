@@ -169,7 +169,7 @@ export class AppComponent {
     }
 
     this.exportingWinnerId.set(winner.id);
-    this.exportMessage.set('Rendering 9:16 winner video…');
+    this.exportMessage.set('Rendering 9:16 raffle video with winner reveal…');
 
     try {
       const allEntries = this.raffle.entries();
@@ -218,7 +218,11 @@ export class AppComponent {
 
       recorder.start(250);
 
-      const totalDuration = 10_800;
+      const countdownDuration = 2_700;
+      const spinDuration = 4_800;
+      const revealStart = countdownDuration + spinDuration;
+      const winnerHoldDuration = 5_500;
+      const totalDuration = revealStart + winnerHoldDuration;
       const started = performance.now();
 
       await new Promise<void>(resolve => {
@@ -229,11 +233,11 @@ export class AppComponent {
           let countdownValue = 3;
           let entry = winner;
 
-          if (elapsed < 2700) {
+          if (elapsed < countdownDuration) {
             countdownValue = 3 - Math.floor(elapsed / 900);
-          } else if (elapsed < 7500) {
+          } else if (elapsed < revealStart) {
             phase = 'spinning';
-            const spinProgress = (elapsed - 2700) / 4800;
+            const spinProgress = (elapsed - countdownDuration) / spinDuration;
             const eased = 1 - Math.pow(1 - spinProgress, 2.4);
             const sequenceIndex = Math.min(
               rouletteSequence.length - 1,
@@ -252,7 +256,7 @@ export class AppComponent {
             countdownValue,
             entry,
             images.get(entry.id) ?? images.get(winner.id)!,
-            Math.max(0, elapsed - 7500),
+            Math.max(0, elapsed - revealStart),
             confetti,
             brandBackground,
             brandLogo,
@@ -269,7 +273,31 @@ export class AppComponent {
         requestAnimationFrame(drawFrame);
       });
 
-      recorder.stop();
+      // Render and hold one final winner frame so the reveal is guaranteed
+      // to be present in the encoded video before MediaRecorder is stopped.
+      this.renderExportFrame(
+        context,
+        canvas,
+        'reveal',
+        1,
+        winner,
+        images.get(winner.id)!,
+        winnerHoldDuration,
+        confetti,
+        brandBackground,
+        brandLogo,
+        prizeImage
+      );
+
+      // Give captureStream/MediaRecorder time to encode the final winner frame
+      // and flush the last chunk before stopping.
+      await this.sleep(900);
+      if (recorder.state === 'recording') {
+        recorder.requestData();
+        await this.sleep(350);
+        recorder.stop();
+      }
+
       const blob = await finished;
       stream.getTracks().forEach(track => track.stop());
 
