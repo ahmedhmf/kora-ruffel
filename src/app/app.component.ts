@@ -91,7 +91,7 @@ export class AppComponent {
     const winner = this.raffle.selectWinner();
     if (!winner) return;
 
-    const pool = this.raffle.entries().filter(entry => entry.id !== winner.id);
+    const pool = this.raffle.eligible();
 
     this.stageState.set('countdown');
     for (const number of [3, 2, 1]) {
@@ -109,7 +109,7 @@ export class AppComponent {
         const interval = 55 + Math.pow(progress, 3) * 520;
 
         if (now - lastSwitch >= interval) {
-          const candidates = pool.length ? pool : this.raffle.entries();
+          const candidates = pool.length ? pool : [winner];
           this.activeEntry.set(
             candidates[Math.floor(Math.random() * candidates.length)] ?? winner
           );
@@ -145,9 +145,8 @@ export class AppComponent {
   }
 
   startNewRaffle() {
-    this.raffle.resetWinners();
     this.stageState.set('idle');
-    this.activeEntry.set(this.raffle.entries()[0] ?? null);
+    this.activeEntry.set(this.raffle.eligible()[0] ?? null);
   }
 
   async exportWinner(winner: RaffleEntry) {
@@ -173,8 +172,8 @@ export class AppComponent {
 
     try {
       const allEntries = this.raffle.entries();
-      const pool = allEntries.filter(entry => entry.id !== winner.id);
-      const displayPool = pool.length ? pool : allEntries;
+      const pool = allEntries.filter(entry => !entry.won && entry.id !== winner.id);
+      const displayPool = pool.length ? pool : [winner];
       const images = new Map<string, HTMLImageElement>();
 
       const [brandBackground, brandLogo, prizeImage] = await Promise.all([
