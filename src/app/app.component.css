@@ -864,3 +864,33 @@
     max-height:40px;
   }
 }
+
+
+/* Logo visibility fix */
+.brand-logo{
+  width:156px;
+  height:auto;
+  max-width:none;
+  object-fit:contain;
+  overflow:visible;
+  filter:invert(1);
+}
+
+.stage-logo{
+  width:142px;
+  height:auto;
+  max-height:none;
+  max-width:none;
+  object-fit:contain;
+  overflow:visible;
+  filter:invert(1);
+}
+
+.kora-brand-chrome{
+  overflow:visible;
+}
+
+@media(max-width:720px){
+  .brand-logo{width:126px}
+  .stage-logo{width:118px}
+}
