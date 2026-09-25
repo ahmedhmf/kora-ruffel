@@ -6,18 +6,18 @@
 <form (ngSubmit)="addEntry()" class="entry-form">
 <label>Name<input [(ngModel)]="name" name="name" placeholder="Alex Morgan" required></label>
 <label>Instagram<input [(ngModel)]="instagram" name="instagram" placeholder="@alexdesigns"></label>
-<label class="upload"><span>{{ fileName() || 'Choose ball design media' }}</span><strong>Upload media</strong><input type="file" accept="image/*,video/*" (change)="onFile($event)" hidden></label>
-@if (designUrl()) { <div class="preview">@if (mediaType() === 'video') { <video [src]="designUrl()" muted loop autoplay playsinline></video> } @else { <img [src]="designUrl()" alt="Design preview"> }<span>Ready to add</span></div> }
+<label class="upload"><span>{{ fileName() || 'Choose ball design' }}</span><strong>Upload image</strong><input type="file" accept="image/*" (change)="onFile($event)" hidden></label>
+@if (designUrl()) { <div class="preview"><img [src]="designUrl()" alt="Design preview"><span>Ready to add</span></div> }
 <button class="primary" type="submit" [disabled]="!name.trim() || !designUrl()">Add participant</button>
 </form></section>
 <section class="panel roster-panel">
 <div class="panel-heading"><div><span class="eyebrow">02 · Roster</span><h2>Participants</h2></div><div class="toolbar"><button class="new-raffle" (click)="startNewRaffle()" [disabled]="!raffle.winners().length">Start new raffle</button><button class="danger" (click)="raffle.clearAll()" [disabled]="!raffle.entries().length">Clear all</button></div></div>
 @if (!raffle.entries().length) { <div class="empty"><div class="empty-ball">✦</div><h3>Your raffle is empty</h3><p>Add names and ball designs to begin.</p></div> }
-@else { <div class="entry-grid">@for (entry of raffle.entries(); track entry.id) { <article class="entry-card" [class.won]="entry.won"><div class="thumb">@if (isVideo(entry)) { <video [src]="entry.designUrl" muted loop autoplay playsinline></video> } @else { <img [src]="entry.designUrl" [alt]="entry.name + ' design'"> }@if (entry.won) {<span class="badge">Winner</span>}</div><div class="entry-meta"><div><strong>{{ entry.name }}</strong><span>{{ entry.instagram ? '@' + entry.instagram : 'No handle' }}</span></div><button aria-label="Remove entry" (click)="raffle.remove(entry.id)">×</button></div></article> }</div> }
+@else { <div class="entry-grid">@for (entry of raffle.entries(); track entry.id) { <article class="entry-card" [class.won]="entry.won"><div class="thumb"><img [src]="entry.designUrl" [alt]="entry.name + ' design'">@if (entry.won) {<span class="badge">Winner</span>}</div><div class="entry-meta"><div><strong>{{ entry.name }}</strong><span>{{ entry.instagram ? '@' + entry.instagram : 'No handle' }}</span></div><button aria-label="Remove entry" (click)="raffle.remove(entry.id)">×</button></div></article> }</div> }
 </section>
 <section class="panel history-panel"><div class="panel-heading"><div><span class="eyebrow">03 · Results</span><h2>Winner history</h2></div><span class="counter">{{ raffle.winners().length }} drawn</span></div>
 @if (!raffle.winners().length) { <p class="muted">Winners will appear here after each draw.</p> }
-@for (record of raffle.winners(); track record.id; let i = $index) { <div class="winner-row"><span class="rank">{{ i + 1 }}</span>@if (isVideo(record.entry)) { <video [src]="record.entry.designUrl" muted loop autoplay playsinline></video> } @else { <img [src]="record.entry.designUrl" alt=""> }<div><strong>{{ record.entry.name }}</strong><span>{{ record.entry.instagram ? '@' + record.entry.instagram : 'Winner' }}</span></div></div> }
+@for (record of raffle.winners(); track record.id; let i = $index) { <div class="winner-row"><span class="rank">{{ i + 1 }}</span><img [src]="record.entry.designUrl" alt=""><div><strong>{{ record.entry.name }}</strong><span>{{ record.entry.instagram ? '@' + record.entry.instagram : 'Winner' }}</span></div></div> }
 </section></main></div>
 
 @if (stageOpen()) {
@@ -27,7 +27,7 @@
 <div class="stage-copy"><span>OFFICIAL GIVEAWAY</span><h2>{{ stageState() === 'reveal' ? 'WE HAVE A WINNER' : 'WHO TAKES IT?' }}</h2><p>{{ raffle.eligible().length }} eligible {{ raffle.eligible().length === 1 ? 'entry' : 'entries' }} remaining</p></div>
 <div class="draw-zone">
 @if (stageState() === 'countdown') { <div class="countdown">{{ countdown() }}</div> }
-@else if (activeEntry(); as entry) { <article class="hero-card" [class.reveal]="stageState() === 'reveal'" [class.spinning]="stageState() === 'spinning'"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="design-frame"><div class="shine"></div>@if (isVideo(entry)) { <video [src]="entry.designUrl" muted loop autoplay playsinline></video> } @else { <img [src]="entry.designUrl" [alt]="entry.name + ' ball design'"> }</div><div class="hero-meta"><span>{{ stageState() === 'reveal' ? 'WINNER' : 'IN THE DRAW' }}</span><h3>{{ entry.name }}</h3><p>{{ entry.instagram ? '@' + entry.instagram : 'Design entry' }}</p></div></article> }
+@else if (activeEntry(); as entry) { <article class="hero-card" [class.reveal]="stageState() === 'reveal'" [class.spinning]="stageState() === 'spinning'"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="design-frame"><div class="shine"></div><img [src]="entry.designUrl" [alt]="entry.name + ' ball design'"></div><div class="hero-meta"><span>{{ stageState() === 'reveal' ? 'WINNER' : 'IN THE DRAW' }}</span><h3>{{ entry.name }}</h3><p>{{ entry.instagram ? '@' + entry.instagram : 'Design entry' }}</p></div></article> }
 @if (stageState() === 'reveal') { <div class="winner-burst"></div><div class="confetti-layer" aria-hidden="true">@for (piece of confetti(); track piece) { <i [style.--i]="piece"></i> }</div> }
 </div>
 <footer class="stage-actions">
