@@ -11,7 +11,7 @@
 <button class="primary" type="submit" [disabled]="!name.trim() || !designUrl()">Add participant</button>
 </form></section>
 <section class="panel roster-panel">
-<div class="panel-heading"><div><span class="eyebrow">02 · Roster</span><h2>Participants</h2></div><div class="toolbar"><button (click)="raffle.resetWinners()" [disabled]="!raffle.winners().length">Reset winners</button><button class="danger" (click)="raffle.clearAll()" [disabled]="!raffle.entries().length">Clear</button></div></div>
+<div class="panel-heading"><div><span class="eyebrow">02 · Roster</span><h2>Participants</h2></div><div class="toolbar"><button class="new-raffle" (click)="startNewRaffle()" [disabled]="!raffle.winners().length">Start new raffle</button><button class="danger" (click)="raffle.clearAll()" [disabled]="!raffle.entries().length">Clear all</button></div></div>
 @if (!raffle.entries().length) { <div class="empty"><div class="empty-ball">✦</div><h3>Your raffle is empty</h3><p>Add names and ball designs to begin.</p></div> }
 @else { <div class="entry-grid">@for (entry of raffle.entries(); track entry.id) { <article class="entry-card" [class.won]="entry.won"><div class="thumb">@if (isVideo(entry)) { <video [src]="entry.designUrl" muted loop autoplay playsinline></video> } @else { <img [src]="entry.designUrl" [alt]="entry.name + ' design'"> }@if (entry.won) {<span class="badge">Winner</span>}</div><div class="entry-meta"><div><strong>{{ entry.name }}</strong><span>{{ entry.instagram ? '@' + entry.instagram : 'No handle' }}</span></div><button aria-label="Remove entry" (click)="raffle.remove(entry.id)">×</button></div></article> }</div> }
 </section>
