@@ -122,18 +122,16 @@
 
 @if (stageOpen()) {
   <section class="studio-overlay">
-    <div class="studio-hint">Instagram recording frame · 9:16</div>
+    <div class="studio-toolbar">
+      <span>Instagram Story / Reel · 9:16</span>
+      <button (click)="closeStage()">Close ×</button>
+    </div>
 
     <section #stage class="raffle-stage" [attr.data-state]="stageState()">
-      <div class="aurora a1"></div>
-      <div class="aurora a2"></div>
-      <div class="grid-lines"></div>
-
-      <header class="stage-header">
+      <div class="kora-brand-chrome">
         <img class="stage-icons" src="/kora-top-icons.svg" alt="" aria-hidden="true">
         <img class="stage-logo" src="/kora-logo.svg" alt="Kora">
-        <button (click)="closeStage()">Close ×</button>
-      </header>
+      </div>
 
       <div class="stage-copy">
         <span>OFFICIAL GIVEAWAY</span>
@@ -156,9 +154,6 @@
             class="hero-card"
             [class.reveal]="stageState() === 'reveal'"
             [class.spinning]="stageState() === 'spinning'">
-
-            <div class="orbit orbit-1"></div>
-            <div class="orbit orbit-2"></div>
 
             <div class="design-frame">
               <div class="shine"></div>
@@ -183,39 +178,41 @@
         }
       </div>
 
-      <footer class="stage-actions">
-        @if (stageState() === 'idle') {
-          <button class="draw-button" [disabled]="!raffle.eligible().length" (click)="drawWinner()">
-            <span>Start draw</span><b>→</b>
-          </button>
-        }
-
-        @if (stageState() === 'spinning') {
-          <div class="status"><i></i> Randomizing entries…</div>
-        }
-
-        @if (stageState() === 'reveal') {
-          <div class="reveal-actions">
-            <button (click)="resetStage()">Hold winner</button>
-
-            @if (activeEntry(); as winner) {
-              <button
-                class="export-stage-btn"
-                [disabled]="!!exportingWinnerId()"
-                (click)="exportWinner(winner)">
-                {{ exportingWinnerId() === winner.id ? 'Exporting…' : 'Export clip' }}
-              </button>
-            }
-
-            <button
-              class="draw-button compact"
-              [disabled]="!raffle.eligible().length"
-              (click)="drawNext()">
-              Draw next →
-            </button>
-          </div>
-        }
-      </footer>
+      <div class="stage-footer-mark">KORA RAFFLE</div>
     </section>
+
+    <div class="studio-controls">
+      @if (stageState() === 'idle') {
+        <button class="draw-button" [disabled]="!raffle.eligible().length" (click)="drawWinner()">
+          <span>Start draw</span><b>→</b>
+        </button>
+      }
+
+      @if (stageState() === 'spinning') {
+        <div class="status"><i></i> Randomizing entries…</div>
+      }
+
+      @if (stageState() === 'reveal') {
+        <div class="reveal-actions">
+          <button class="secondary-control" (click)="resetStage()">Hold winner</button>
+
+          @if (activeEntry(); as winner) {
+            <button
+              class="export-stage-btn"
+              [disabled]="!!exportingWinnerId()"
+              (click)="exportWinner(winner)">
+              {{ exportingWinnerId() === winner.id ? 'Exporting…' : 'Export clip' }}
+            </button>
+          }
+
+          <button
+            class="draw-button compact"
+            [disabled]="!raffle.eligible().length"
+            (click)="drawNext()">
+            Draw next →
+          </button>
+        </div>
+      }
+    </div>
   </section>
 }
