@@ -546,3 +546,267 @@
   .brand-lockup{gap:9px}
   .brand-lockup .eyebrow{padding-left:9px}
 }
+
+
+/* Refined Kora recording studio */
+.studio-overlay{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  place-items:center;
+  gap:14px;
+  padding:16px;
+  background:#050505;
+  overflow:auto;
+}
+
+.studio-toolbar,
+.studio-controls{
+  width:min(calc((100dvh - 150px) * 9 / 16),calc(100dvw - 32px),430px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.studio-toolbar{
+  color:#9da5b3;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+.studio-toolbar button,
+.secondary-control{
+  border:1px solid #ffffff24;
+  background:#111;
+  color:#fff;
+  border-radius:999px;
+  padding:9px 13px;
+}
+
+.studio-controls{
+  justify-content:center;
+  min-height:54px;
+}
+
+.raffle-stage{
+  position:relative;
+  inset:auto;
+  width:min(calc((100dvh - 150px) * 9 / 16),calc(100dvw - 32px),430px);
+  height:min(calc(100dvh - 150px),calc((100dvw - 32px) * 16 / 9),764px);
+  min-height:0;
+  aspect-ratio:9/16;
+  display:grid;
+  grid-template-rows:auto auto 1fr auto;
+  overflow:hidden;
+  padding:24px 22px 22px;
+  border:1px solid #ffffff18;
+  border-radius:26px;
+  background:
+    linear-gradient(rgba(0,0,0,.10),rgba(0,0,0,.24)),
+    url('/kora-bg.svg') center center / cover no-repeat;
+  color:#fff;
+  box-shadow:0 26px 90px #000;
+}
+
+.raffle-stage .aurora,
+.raffle-stage .grid-lines,
+.raffle-stage .orbit{
+  display:none!important;
+}
+
+.kora-brand-chrome{
+  position:relative;
+  z-index:3;
+  display:grid;
+  justify-items:center;
+  gap:18px;
+  padding-top:2px;
+}
+
+.stage-icons{
+  position:static;
+  transform:none;
+  width:76%;
+  max-width:270px;
+  height:auto;
+  opacity:1;
+}
+
+.stage-logo{
+  position:static;
+  width:118px;
+  height:auto;
+  filter:invert(1);
+}
+
+.raffle-stage .stage-copy{
+  position:relative;
+  z-index:2;
+  padding-top:24px;
+  text-align:center;
+}
+
+.raffle-stage .stage-copy>span{
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.24em;
+}
+
+.raffle-stage .stage-copy h2{
+  margin:8px 0 6px;
+  color:#fff;
+  font:700 clamp(29px,6vw,42px) 'Space Grotesk',sans-serif;
+  line-height:.95;
+  letter-spacing:-.045em;
+  text-shadow:0 3px 20px #000;
+}
+
+.raffle-stage .stage-copy p{
+  margin:0;
+  color:#ddd;
+  font-size:11px;
+}
+
+.raffle-stage .draw-zone{
+  position:relative;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  min-height:0;
+  padding:10px 0 8px;
+}
+
+.raffle-stage .hero-card{
+  width:min(100%,286px);
+  text-align:center;
+}
+
+.raffle-stage .design-frame{
+  position:relative;
+  aspect-ratio:1;
+  padding:8px;
+  overflow:hidden;
+  border:3px solid #e10600;
+  border-radius:50%;
+  background:#050505;
+  box-shadow:0 24px 70px #000b;
+}
+
+.raffle-stage .design-frame:before{
+  display:none;
+}
+
+.raffle-stage .hero-meta{
+  padding-top:18px;
+}
+
+.raffle-stage .hero-meta span{
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.2em;
+}
+
+.raffle-stage .hero-meta h3{
+  margin:6px 0 3px;
+  color:#fff;
+  font:700 clamp(25px,6vw,38px) 'Space Grotesk',sans-serif;
+  line-height:1;
+  text-shadow:0 2px 14px #000;
+}
+
+.raffle-stage .hero-meta p{
+  margin:0;
+  color:#e7e7e7;
+  font-size:13px;
+}
+
+.raffle-stage .countdown{
+  color:#fff;
+  font:700 min(34vw,175px) 'Space Grotesk',sans-serif;
+  text-shadow:0 0 52px #e10600;
+}
+
+.raffle-stage .reveal .design-frame{
+  box-shadow:0 30px 90px #000,0 0 50px #e1060080;
+}
+
+.raffle-stage .reveal .hero-meta span{
+  color:#ff3a32;
+  background:none;
+}
+
+.stage-footer-mark{
+  position:relative;
+  z-index:2;
+  justify-self:center;
+  color:#ffffff99;
+  font:700 9px 'Space Grotesk',sans-serif;
+  letter-spacing:.22em;
+  padding-top:8px;
+}
+
+.raffle-stage .winner-burst{
+  width:min(88%,330px);
+  background:radial-gradient(circle,#e1060038 0,transparent 68%);
+}
+
+.studio-controls .draw-button{
+  background:#e10600;
+  color:#fff;
+}
+
+.studio-controls .draw-button b{
+  background:#fff;
+  color:#000;
+}
+
+.studio-controls .status{
+  color:#c7cbd3;
+}
+
+.studio-controls .status i{
+  background:#e10600;
+  box-shadow:0 0 14px #e10600;
+}
+
+.studio-controls .reveal-actions{
+  display:flex;
+  justify-content:center;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:720px){
+  .studio-overlay{
+    gap:10px;
+    padding:10px;
+  }
+
+  .studio-toolbar,
+  .studio-controls{
+    width:min(calc((100dvh - 120px) * 9 / 16),calc(100dvw - 20px));
+  }
+
+  .studio-toolbar{
+    font-size:9px;
+  }
+
+  .raffle-stage{
+    width:min(calc((100dvh - 120px) * 9 / 16),calc(100dvw - 20px));
+    height:min(calc(100dvh - 120px),calc((100dvw - 20px) * 16 / 9));
+    padding:20px 16px 18px;
+    border-radius:22px;
+  }
+
+  .stage-icons{width:80%}
+  .stage-logo{width:96px}
+  .kora-brand-chrome{gap:14px}
+  .raffle-stage .stage-copy{padding-top:18px}
+  .raffle-stage .hero-card{width:min(100%,260px)}
+}
